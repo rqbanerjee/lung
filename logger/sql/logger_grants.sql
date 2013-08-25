@@ -1,7 +1,7 @@
 -- Create a lung-logger user and give him grants to insert and select from previous log messages
 -- used 'lung-logger' as username because it's harder to guess.
 -- @author rajat.banerjee
--- @version 0.1
+-- @version 0.2
 
 CREATE USER 'lung-logger'@'localhost' IDENTIFIED BY 'changeme';
 

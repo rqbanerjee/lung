@@ -1,6 +1,6 @@
 -- Create a logging table to receive results from remote processes processing jobs
 -- @author rajat.banerjee
--- @version 0.1
+-- @version 0.2
 
 -- before using: "use <database_name>;"
 -- mine is called lung
