@@ -2,14 +2,17 @@
 
 use Logger;
 
+#unnecessary , just to display params
 $logger = new Logger();
 
-Logger->log_debug("this is a debug");
+Logger->log_debug("test_entity1", "this is a debug");
 
-Logger->log_info("this is an info");
+Logger->log_info("test_entity2", "this is an info");
 
-Logger->log_warn("this is a warn");
+Logger->log_warn("test_entity1", "this is a warn");
 
-Logger->log_error("this is an error");
+Logger->log_error("test_entity2", "this is an error");
 
-Logger->log_fatal("this is FATAL");
+Logger->log_fatal("test_entity3", "this is FATAL");
+
+Logger->log_info("no_entity", "no entity")
