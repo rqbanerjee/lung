@@ -53,6 +53,7 @@ sub _log
 
     $sth = $dbh->prepare($sql);
     $sth->execute or die "SQL Error: $DBI::errstr\n";
+    $dbh->disconnect or warn "Disconnection failed: $DBI::errstr\n";
 }
 
 1;
