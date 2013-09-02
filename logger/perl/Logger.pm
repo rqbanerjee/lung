@@ -2,12 +2,9 @@ package Logger;
 use DBI;
 use feature ':5.10'; #enable 'say' convenience method
 use POSIX qw(strftime);
+use YAML qw(LoadFile);
 
-my $DB_NAME = 'lung';
-my $DB_HOST = 'localhost';
-my $DB_USER = 'lung-logger';
-my $DB_PASSWORD = 'changeme';
-my $LOGFILE_PATH = '/tmp/temp_logs/log.txt';
+my $DB_NAME, $DB_HOST, $DB_USER, $DB_PASSWORD, $LOGFILE_PATH;
 
 # Syntax:
 # Logger->log_debug(entity, message)
@@ -42,6 +39,15 @@ sub new
     # Print out DB parameters
 }
 
+# Private method to load constants from file
+sub _load_configuration
+{
+    # load YAML file into perl hash ref?
+    my $config = LoadFile("config.yml");
+    ($DB_NAME, $DB_HOST, $DB_USER, $DB_PASSWORD, $LOGFILE_PATH) =
+        ($config->{DB_NAME}, $config->{DB_HOST}, $config->{DB_USER}, $config->{DB_PASSWORD}, $config->{LOGFILE_PATH});
+}
+
 # Private method to log to file
 sub _log_to_file
 {
@@ -52,12 +58,12 @@ sub _log_to_file
     open (LOG, ">>$LOGFILE_PATH") or say("Failed to open log file, but will log to db: $!");
     say LOG "$loglevel\t - $now [$entity] - $message";
     close(LOG);
-
 }
 
 # Private method for doing the actual work
 sub _log
 {
+    _load_configuration
     my ($loglevel, $entity, $message) = @_;
     say("Logging '$message' at loglevel '$loglevel' for entity '$entity'.");
 
@@ -66,7 +72,7 @@ sub _log
         or die "Connection Error: $DBI::errstr\n";
 
     $sql = "INSERT INTO logs (log_level, entity, message) VALUES ('$loglevel', '$entity','$message')";
-    #say("SQL: $sql");
+    #say("SQL: $sql\n");
 
     $sth = $dbh->prepare($sql);
     $sth->execute or die "SQL Error: $DBI::errstr\n";

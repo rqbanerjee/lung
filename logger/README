@@ -3,8 +3,6 @@ Version 0.1
 
 Need to add this to the AMI preparation:
 $ sudo cpan DBD::mysql
+$ sudo cpan YAML
 
-to get mysql connectivity through perl. system("mysql <command>") isn't robust, can't catch error cases. If we want to store the log message
-even if connecting to the db fails, we have to get the error code back and know why the connection failed.
-
-
+to get mysql connectivity and YAML file parsing through perl. system("mysql <command>") isn't robust, can't catch error cases. If we want to store the log message even if connecting to the db fails, we have to get the error code back and know why the connection failed.

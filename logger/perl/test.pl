@@ -2,9 +2,6 @@
 
 use Logger;
 
-#unnecessary , just to display params
-$logger = new Logger();
-
 Logger->log_debug("test_entity1", "this is a debug");
 
 Logger->log_info("test_entity2", "this is an info");

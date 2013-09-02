@@ -1,0 +1,5 @@
+DB_NAME: lung
+DB_HOST: localhost
+DB_USER: lung-logger
+DB_PASSWORD: changeme
+LOGFILE_PATH: /tmp/temp_logs/log.txt
