@@ -68,8 +68,11 @@ sub _log
     say("Logging '$message' at loglevel '$loglevel' for entity '$entity'.");
 
     _log_to_file($loglevel, $entity, $message);
-    $dbh = DBI->connect("DBI:mysql:$DB_NAME@$DB_HOST", $DB_USER, $DB_PASSWORD)
-        or die "Connection Error: $DBI::errstr\n";
+    $connection_string = "DBI:mysql:database=$DB_NAME;host=$DB_HOST";
+    #say "Connection String: $connection_string";
+
+    $dbh = DBI->connect($connection_string, $DB_USER, $DB_PASSWORD)
+        or warn "Connection Error: $DBI::errstr\n";
 
     $sql = "INSERT INTO logs (log_level, entity, message) VALUES ('$loglevel', '$entity','$message')";
     #say("SQL: $sql\n");
