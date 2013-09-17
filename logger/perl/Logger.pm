@@ -43,7 +43,7 @@ sub new
 sub _load_configuration
 {
     # load YAML file into perl hash ref?
-    my $config = LoadFile("config.yml");
+    my $config = LoadFile("/Projects/Common/scripts/perl/config.yml");
     ($DB_NAME, $DB_HOST, $DB_USER, $DB_PASSWORD, $LOGFILE_PATH) =
         ($config->{DB_NAME}, $config->{DB_HOST}, $config->{DB_USER}, $config->{DB_PASSWORD}, $config->{LOGFILE_PATH});
 }
