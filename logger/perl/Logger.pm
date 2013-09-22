@@ -3,8 +3,9 @@ use DBI;
 use feature ':5.10'; #enable 'say' convenience method
 use POSIX qw(strftime);
 use YAML qw(LoadFile);
+use Sys::Hostname qw(hostname);
 
-my $DB_NAME, $DB_HOST, $DB_USER, $DB_PASSWORD, $LOGFILE_PATH;
+my $DB_NAME, $DB_HOST, $DB_USER, $DB_PASSWORD, $LOGFILE_PATH, $HOSTNAME, $CALLERS_PID;
 
 # Syntax:
 # Logger->log_debug(entity, message)
@@ -46,6 +47,15 @@ sub _load_configuration
     my $config = LoadFile("/Projects/Common/scripts/perl/config.yml");
     ($DB_NAME, $DB_HOST, $DB_USER, $DB_PASSWORD, $LOGFILE_PATH) =
         ($config->{DB_NAME}, $config->{DB_HOST}, $config->{DB_USER}, $config->{DB_PASSWORD}, $config->{LOGFILE_PATH});
+    $HOSTNAME = hostname;
+
+    #for the following call, calling $PID always returned ''. TODO, figure out why and which PID Jennifer wants
+    $CALLERS_PID = getppid();
+    #if for some reason the getppid() call fails and returns empty string, put in 0 so SQL INSERT does not fail.
+    if ($CALLERS_PID eq '') {
+      $CALLERS_PID = 0;
+    }
+    #say "HOSTNAME $HOSTNAME, PID $CALLERS_PID.";
 }
 
 # Private method to log to file
@@ -74,7 +84,7 @@ sub _log
     $dbh = DBI->connect($connection_string, $DB_USER, $DB_PASSWORD)
         or warn "Connection Error: $DBI::errstr\n";
 
-    $sql = "INSERT INTO logs (log_level, entity, message) VALUES ('$loglevel', '$entity','$message')";
+    $sql = "INSERT INTO logs (log_level, entity, message, hostname, pid) VALUES ('$loglevel', '$entity', '$message', '$HOSTNAME', '$CALLERS_PID')";
     #say("SQL: $sql\n");
 
     $sth = $dbh->prepare($sql);
