@@ -12,4 +12,6 @@ Logger->log_error("test_entity2", "this is an error");
 
 Logger->log_fatal("test_entity3", "this is FATAL");
 
+Logger->log_return_code("my_calling_function", 255);
+
 Logger->log_info("no_entity", "no entity")

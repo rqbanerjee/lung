@@ -34,6 +34,11 @@ sub log_fatal
     _log('fatal', @_[1], @_[2])
 }
 
+sub log_return_code
+{
+    _log('return_code', @_[1], @_[2])
+}
+
 sub new
 {
     say("Will log into database '$DB_NAME' on '$DB_HOST' as '$DB_USER'.\n");
